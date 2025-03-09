@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="rental_status_options">
+        <item>All</item>
+        <item>Active</item>
+        <item>Completed</item>
+    </string-array>
+
+    <string-array name="sort_options">
+        <item>Date (Newest First)</item>
+        <item>Date (Oldest First)</item>
+        <item>Amount (High to Low)</item>
+        <item>Amount (Low to High)</item>
+    </string-array>
+
+
+</resources>

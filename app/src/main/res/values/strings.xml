@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CityCycle Rentals</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="admin_name">Admin: Chethukawagachchi</string>
+    <string name="current_time">2025-02-27 09:27:45</string>
+    <string name="welcome_message">Welcome to CityCycle Rentals</string>
+    <string name="admin_dashboard">Admin Dashboard</string>
+    <string name="confirm_logout">Are you sure you want to log out?</string>
+    <string name="logging_out">Logging out...</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Availability options -->
+    <string-array name="availability_options">
+        <item>Available</item>
+        <item>Not Available</item>
+        <item>Under Maintenance</item>
+        <item>Reserved</item>
+    </string-array>
+
+    <!-- Bike types -->
+    <string-array name="bike_types">
+        <item>All</item>
+        <item>Mountain Bike</item>
+        <item>Road Bike</item>
+        <item>Electric Bike</item>
+        <item>City Bike</item>
+        <item>Hybrid Bike</item>
+    </string-array>
+
+    <!-- Navigation Menu Items -->
+    <string name="nav_manage_users">Manage Users</string>
+    <string name="nav_view_users">View Users</string>
+    <string name="nav_manage_bikes">Manage Bikes</string>
+    <string name="nav_view_bikes">View Bikes</string>
+    <string name="nav_view_rentals">View Rentals</string>
+    <string name="nav_manage_locations">Manage Locations</string>
+    <string name="nav_reports">Reports</string>
+    <string name="nav_logout">Logout</string>
+    <string name="too_many_attempts" />
+
+    <!-- Predefined locations -->
+    <string-array name="predefined_locations">
+        <item>Select Location</item>
+        <item>Colombo</item>
+        <item>Kandy</item>
+        <item>Galle</item>
+        <item>Matara</item>
+        <item>Negombo</item>
+        <item>Kurunegala</item>
+        <item>Anuradhapura</item>
+        <item>monargala</item>
+        <item>Custom Location</item>
+    </string-array>
+
+    <!-- strings.xml -->
+
+
+    <string name="bike_id">Bike ID:</string>
+    <string name="from">From:</string>
+    <string name="to">To:</string>
+    <string name="rental_completed">Rental Completed</string>
+    <string name="rental_active">Rental Active</string>
+
+    <string name="title_manage_bikes">Manage Bikes</string>
+    <string name="hint_bike_id">Bike ID</string>
+    <string name="helper_bike_id">Enter a unique identifier for the bike</string>
+    <string name="hint_bike_type">Select Bike Type</string>
+    <string name="hint_price_per_hour">Price per Hour</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_location">Select Location</string>
+    <string name="hint_custom_location">Custom Location</string>
+    <string name="hint_availability">Select Availability Status</string>
+    <string name="desc_bike_image">Bike Image</string>
+    <string name="btn_select_image">Select Image</string>
+    <string name="btn_insert">Insert</string>
+    <string name="btn_search">Search</string>
+    <string name="btn_update">Update</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_clear">Clear Fields</string>
+
+    <string name="login_screen">Login Screen</string>
+    <string name="app_logo">Application Logo</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+
+    <string name="admin_login">Admin Login</string>
+
+</resources>

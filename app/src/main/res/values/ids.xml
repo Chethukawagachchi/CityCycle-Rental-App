@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="dateRangeText" type="id" />
+    <item name="totalSpentText" type="id" />
+    <item name="listTitle" type="id" />
+    <item name="groupIndicator" type="id" />
+    <item name="descriptionScrollView" type="id" />
+</resources>

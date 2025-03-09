@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/nav_header_background">
+
+    <!-- Card Container -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardCornerRadius="40dp"
+        app:cardElevation="8dp"
+        android:layout_marginBottom="16dp">
+
+        <!-- Profile Image -->
+        <ImageView
+            android:id="@+id/nav_header_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/lll"
+            android:contentDescription="Resort Logo" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Resort Name -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Citycycle Rentals"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:letterSpacing="0.05"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="sans-serif-medium"/>
+
+    <!-- Admin Panel Text -->
+    <TextView
+        android:id="@+id/header_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Admin Panel"
+        android:textColor="#E0FFFFFF"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:letterSpacing="0.1"
+        android:fontFamily="sans-serif-light"/>
+
+</LinearLayout>

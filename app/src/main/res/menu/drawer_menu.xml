@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/group_rentals">
+        <item
+            android:id="@+id/nav_bikes"
+            android:icon="@drawable/ic_manage_bikes"
+            android:title="Available Bikes" />
+        <item
+            android:id="@+id/nav_active_rentals"
+            android:icon="@drawable/ic_rentals"
+            android:title="Active Rentals" />
+        <item
+            android:id="@+id/nav_rental_history"
+            android:icon="@drawable/ic_history"
+            android:title="Rental History" />
+        <item
+            android:id="@+id/nav_locations"
+            android:icon="@drawable/ic_location"
+            android:title="Rental Locations" />
+        <!-- Add this new item -->
+        <item
+            android:id="@+id/nav_discounts"
+            android:icon="@drawable/ic_discount"
+            android:title="Available Discounts" />
+    </group>
+
+    <group android:id="@+id/group_account">
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_profile"
+            android:title="My Profile" />
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_notification"
+            android:title="Notifications" />
+        <item
+            android:id="@+id/nav_preferences"
+            android:icon="@drawable/ic_settings"
+            android:title="Preferences" />
+    </group>
+
+    <group android:id="@+id/group_support">
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help"
+            android:title="Help &amp; Support" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_info"
+            android:title="About CityCycle" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="Sign Out" />
+    </group>
+</menu>

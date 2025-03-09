@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission
+        android:name="android.permission.SEND_SMS"
+        tools:ignore="PermissionImpliesUnsupportedChromeOsHardware" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/lll"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/lll"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Citycycle"
+        tools:targetApi="31">
+        <activity
+            android:name=".ViewDiscountActivity"
+            android:exported="true" />
+        <activity
+            android:name=".EditDiscountDialog"
+            android:exported="false" />
+        <activity
+            android:name=".ManageDiscountActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AdminReportsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ManageLocationsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ViewRentalsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".HelpSupportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditLocationDialogFragment"
+            android:exported="false" />
+        <activity
+            android:name=".AddLocationDialogFragment"
+            android:exported="false" />
+        <activity
+            android:name=".LocationsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".RentalHistoryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".PreferencesActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ManageUsersActivity"
+            android:exported="true" />
+        <activity
+            android:name=".RentalsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".CalenderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminUsersActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AdminViewBikesActivity"
+            android:exported="true" />
+        <activity
+            android:name=".NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Admin_Logins"
+            android:exported="true" />
+        <activity
+            android:name=".Register"
+            android:exported="true" />
+        <activity
+            android:name=".Customer_Logins"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ViewBikesActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="true" />
+        <activity
+            android:name=".BikeRentalActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ManageBikesActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+    </application>
+
+</manifest>
