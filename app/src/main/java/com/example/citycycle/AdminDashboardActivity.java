@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,9 +21,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AdminDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
+    private DB_Operations dbOperations;
+    private TextView totalUsersTextView, activeRentalsTextView, totalRevenueTextView;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -34,6 +40,16 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
+
+        // Initialize TextViews
+        totalUsersTextView = findViewById(R.id.total_users);
+        activeRentalsTextView = findViewById(R.id.active_rentals);
+        totalRevenueTextView = findViewById(R.id.total_revenue);
+
+        dbOperations = new DB_Operations(this);
+
+        // Load the data to the dashboard
+        loadDashboardData();
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -52,6 +68,49 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+    }
+
+    private void loadDashboardData() {
+        // Get the total user count
+        int totalUsers = dbOperations.getAllUsers().size();
+        totalUsersTextView.setText(String.valueOf(totalUsers));
+
+        // Get the active rentals count
+        int activeRentals = getActiveRentalsCount();
+        activeRentalsTextView.setText(String.valueOf(activeRentals));
+
+        // Get the total revenue
+        double totalRevenue = calculateTotalRevenue();
+        totalRevenueTextView.setText(String.format("$%.2fK", totalRevenue/1000));
+    }
+
+    private int getActiveRentalsCount() {
+        // Add logic to count active rentals from your database
+        // For example, you might need to check rentals where the end time is in the future.
+        // This depends on how you define 'active' in your application.
+
+        ArrayList<BikeRental> allRentals = dbOperations.getAllRentals();
+        int activeCount = 0;
+        for (BikeRental rental : allRentals) {
+            // Implement logic here to check if the rental is active.
+            // This is just a placeholder, adjust the condition as needed.
+            activeCount++;
+
+        }
+
+        return activeCount;
+    }
+
+    private double calculateTotalRevenue() {
+        // Add logic to calculate the total revenue from your database
+        // You will need to sum the 'TotalPrice' field from your rentals table.
+
+        ArrayList<BikeRental> allRentals = dbOperations.getAllRentals();
+        double totalRevenue = 0;
+        for (BikeRental rental : allRentals) {
+            totalRevenue += rental.getTotalPrice();
+        }
+        return totalRevenue;
     }
 
     @Override
@@ -86,9 +145,9 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
                     .setMessage("Are you sure you want to log out?")
                     .setPositiveButton("Yes", (dialog, which) -> {
                         Toast.makeText(this, "Logging out...", Toast.LENGTH_SHORT).show();
-                       // Intent intent = new Intent(this, AdminLoginActivity.class);
-                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                       // startActivity(intent);
+                        // Intent intent = new Intent(this, AdminLoginActivity.class);
+                        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        // startActivity(intent);
                         finish();
                     })
                     .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())

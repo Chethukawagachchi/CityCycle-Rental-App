@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DB_Operations extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "CityCycleDB";
@@ -56,6 +58,8 @@ public class DB_Operations extends SQLiteOpenHelper {
                 "Longitude DOUBLE, " +
                 "Description VARCHAR(500), " +
                 "AvailableBikes INTEGER)");
+
+        
 
         // Create Discount table
         sqLiteDatabase.execSQL("CREATE TABLE tblDiscount (" +
@@ -684,5 +688,28 @@ public class DB_Operations extends SQLiteOpenHelper {
         }
 
         return discount;
+    }
+
+    public void updateExpiredRentals() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Get current datetime
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String currentDateTime = "2025-03-21 06:58:42"; // Use the current datetime
+
+        // Update bikes where rental period has expired
+        String query = "UPDATE Bikes SET Availability = 'Available' " +
+                "WHERE BikeID IN (SELECT BikeID FROM Rentals " +
+                "WHERE EndDateTime < ? AND Status = 'Active')";
+
+        db.execSQL(query, new String[]{currentDateTime});
+
+        // Update rental status
+        query = "UPDATE Rentals SET Status = 'Completed' " +
+                "WHERE EndDateTime < ? AND Status = 'Active'";
+
+        db.execSQL(query, new String[]{currentDateTime});
+
+        db.close();
     }
 }

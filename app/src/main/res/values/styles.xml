@@ -17,5 +17,7 @@
         <item name="android:windowBackground">@color/background</item>
     </style>
 
+    <style name="ToolbarTitle"></style>
+
 
 </resources>

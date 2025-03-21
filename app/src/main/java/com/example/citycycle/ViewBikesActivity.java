@@ -1,7 +1,9 @@
 package com.example.citycycle;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -35,6 +37,7 @@ public class ViewBikesActivity extends AppCompatActivity {
     private AutoCompleteTextView spinnerLocation;
     private TextInputLayout customLocationLayout;
     private EditText editTextCustomLocation;
+    private BroadcastReceiver availabilityUpdateReceiver;  // Declare the receiver here
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +104,19 @@ public class ViewBikesActivity extends AppCompatActivity {
                 filterOptionsContainer.setVisibility(View.GONE);
             }
         });
+
+        // Register broadcast receiver
+        availabilityUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int bikeId = intent.getIntExtra("bikeId", -1);
+                String availability = intent.getStringExtra("availability");
+
+                if (bikeId != -1 && availability != null) {
+                    bikeAdapter.updateBikeAvailability(bikeId, availability);
+                }
+            }
+        };
     }
 
     private void setupLocationSelection() {
@@ -189,5 +205,30 @@ public class ViewBikesActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(availabilityUpdateReceiver, new IntentFilter("BIKE_AVAILABILITY_UPDATED"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(availabilityUpdateReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Unregister the receiver when the activity is destroyed to prevent memory leaks
+        try {
+            unregisterReceiver(availabilityUpdateReceiver);
+        } catch (IllegalArgumentException e) {
+            // This exception occurs when the receiver is not registered.
+            // Just catch and ignore it.
+            e.printStackTrace();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.citycycle;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.NotificationChannel;
@@ -283,6 +284,13 @@ public class BikeRentalActivity extends AppCompatActivity {
                             sendNotification(email, totalPrice);
                             sendSmsNotification(user.getMobile(), rental);
 
+                            // Calculate rental duration in hours
+                            long differenceInMillis = end.getTime() - start.getTime();
+                            double hours = differenceInMillis / (1000.0 * 60 * 60);
+
+                            // Schedule availability update
+                            scheduleAvailabilityUpdate(bikeID, startTime, (int) Math.round(hours)); // Cast to int
+
                             finish();
                         } else {
                             Toast.makeText(this, "User not found!", Toast.LENGTH_SHORT).show();
@@ -414,6 +422,44 @@ public class BikeRentalActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(this, "Invalid discount code", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void scheduleAvailabilityUpdate(int bikeId, String startTime, int hours) {
+        // Calculate rental end time
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        try {
+            Date startDate = sdf.parse(startTime);
+            Calendar endTime = Calendar.getInstance();
+            endTime.setTime(startDate);
+            endTime.add(Calendar.HOUR_OF_DAY, hours);
+
+            // Set up alarm for rental end time
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            // Create intent for BroadcastReceiver
+            Intent intent = new Intent(this, RentalEndReceiver.class);
+            intent.putExtra("bikeId", bikeId);
+
+            // Create PendingIntent
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    this,
+                    bikeId, // Use bikeId as request code to make it unique
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
+
+            // Set exact alarm for rental end time
+            if (alarmManager != null) {
+                alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        endTime.getTimeInMillis(),
+                        pendingIntent
+                );
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 }

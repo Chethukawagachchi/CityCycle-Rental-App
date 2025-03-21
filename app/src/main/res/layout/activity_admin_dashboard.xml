@@ -9,80 +9,252 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <!-- Main content layout -->
-    <RelativeLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/nav_header_background">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/nav_header_background"
-            android:elevation="4dp"
-            app:titleTextColor="@android:color/white"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
+            android:background="@android:color/transparent"
+            android:elevation="0dp">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent"
+                android:elevation="0dp"
+                app:titleTextColor="@android:color/white"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:navigationIcon="@drawable/ic_menu"
+                app:navigationIconTint="@android:color/white"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- Background with gradient -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/nav_header_background"/>
+
+        <!-- Add Menu Button to ensure visibility -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/menu_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:layout_margin="16dp"
+            android:contentDescription="Open Menu"
+            app:fabSize="mini"
+            app:backgroundTint="#FFFFFF"
+            app:tint="#1A237E"
+            android:src="@drawable/ic_menu"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="24dp">
+                android:padding="16dp">
 
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="16dp"
-                    android:src="@drawable/lll"
-                    android:contentDescription="CityCycle Logo"/>
-
-                <TextView
-                    android:id="@+id/welcome_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="Welcome to"
-                    android:textAlignment="center"
-                    android:textColor="#D9DADC"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="CityCycle Rentals"
-                    android:textAlignment="center"
-                    android:textColor="#E8E8ED"
-                    android:textSize="32sp"
-                    android:textStyle="bold" />
-
-                <TextView
+                <!-- Welcome Card -->
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Admin Dashboard"
-                    android:textAlignment="center"
-                    android:textColor="#ECEDF4"
-                    android:textSize="20sp" />
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="#FFFFFF">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="24dp">
+
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="16dp"
+                            android:src="@drawable/lll"
+                            android:contentDescription="CityCycle Logo"/>
+
+                        <TextView
+                            android:id="@+id/welcome_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Welcome to"
+                            android:textAlignment="center"
+                            android:textColor="#455A64"
+                            android:textSize="24sp"
+                            android:textStyle="normal"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="CityCycle Rentals"
+                            android:textAlignment="center"
+                            android:textColor="#1A237E"
+                            android:textSize="32sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="4dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Admin Dashboard"
+                            android:textAlignment="center"
+                            android:textColor="#455A64"
+                            android:textSize="20sp"
+                            android:textStyle="normal"
+                            android:layout_marginTop="8dp"/>
+
+                        <!-- Quick Stats Cards -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="24dp"
+                            android:weightSum="3">
+
+                            <!-- Total Users Card -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_margin="4dp"
+                                app:cardCornerRadius="12dp"
+                                app:cardElevation="4dp"
+                                app:cardBackgroundColor="#E8EAF6">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:padding="12dp">
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:src="@drawable/ic_person"
+                                        app:tint="#1A237E"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Users"
+                                        android:textColor="#1A237E"
+                                        android:textSize="14sp"
+                                        android:layout_marginTop="4dp"/>
+
+                                    <TextView
+                                        android:id="@+id/total_users"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="2,345"
+                                        android:textColor="#1A237E"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold"/>
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <!-- Active Rentals Card -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_margin="4dp"
+                                app:cardCornerRadius="12dp"
+                                app:cardElevation="4dp"
+                                app:cardBackgroundColor="#E0F2F1">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:padding="12dp">
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:src="@drawable/ic_bike_type"
+                                        app:tint="#00695C"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Active"
+                                        android:textColor="#00695C"
+                                        android:textSize="14sp"
+                                        android:layout_marginTop="4dp"/>
+
+                                    <TextView
+                                        android:id="@+id/active_rentals"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="156"
+                                        android:textColor="#00695C"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold"/>
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <!-- Revenue Card -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_margin="4dp"
+                                app:cardCornerRadius="12dp"
+                                app:cardElevation="4dp"
+                                app:cardBackgroundColor="#E8F5E9">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:padding="12dp">
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:src="@drawable/ic_rentals"
+                                        app:tint="#2E7D32"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Revenue"
+                                        android:textColor="#2E7D32"
+                                        android:textSize="14sp"
+                                        android:layout_marginTop="4dp"/>
+
+                                    <TextView
+                                        android:id="@+id/total_revenue"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="$12.5K"
+                                        android:textColor="#2E7D32"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold"/>
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    </RelativeLayout>
-
+    <!-- Enhanced Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -92,7 +264,9 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/admin_nav_menu"
-        app:itemIconTint="#1A237E"
-        app:itemTextColor="#1A237E"/>
+        app:itemIconTint="@color/nav_item_colors"
+        app:itemTextColor="@color/nav_item_colors"
+        app:itemIconPadding="16dp"
+        app:itemHorizontalPadding="24dp"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

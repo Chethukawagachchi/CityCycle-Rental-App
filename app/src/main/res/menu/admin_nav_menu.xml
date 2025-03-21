@@ -31,7 +31,6 @@
             android:icon="@drawable/ic_locations"
             android:title="Manage Locations" />
 
-
         <item
             android:id="@+id/nav_manage_discounts"
             android:icon="@drawable/ic_discount"
