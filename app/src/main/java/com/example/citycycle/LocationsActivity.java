@@ -15,6 +15,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;  // Import FAB
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,8 +30,9 @@ public class LocationsActivity extends AppCompatActivity {
     private TextView emptyView;
     private Handler timeHandler;
     private SimpleDateFormat dateFormat;
-    private static final String CURRENT_USER = "chethukdenuwan"; // Updated to match current user
+    private static final String CURRENT_USER = "chethukdenuwan";
     private LocationsAdapter adapter;
+    private static final int SELECT_LOCATIONS_REQUEST = 1001;  // Request code for the SelectLocationActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +43,11 @@ public class LocationsActivity extends AppCompatActivity {
         setupToolbar();
         setupTimeDisplay();
         loadLocations();
+        setupFloatingActionButton(); // Initialize the FAB
 
-        // Insert sample locations (only needed once, you might want to conditionally run this)
-        DB_Operations dbOperations = new DB_Operations(this);
-        dbOperations.insertSampleLocations();
+        // (Optional) Insert sample locations - consider doing this only once on app install
+        // DB_Operations dbOperations = new DB_Operations(this);
+        // dbOperations.insertSampleLocations();
     }
 
     private void initializeViews() {
@@ -98,7 +102,6 @@ public class LocationsActivity extends AppCompatActivity {
         } else {
             locationsRecyclerView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
-            // Updated adapter initialization to pass the context
             adapter = new LocationsAdapter(this, locations);
             locationsRecyclerView.setAdapter(adapter);
         }
@@ -121,71 +124,100 @@ public class LocationsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void setupFloatingActionButton() {
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            Intent intent = new Intent(LocationsActivity.this, SelectLocationActivity.class);
+            startActivityForResult(intent, SELECT_LOCATIONS_REQUEST);
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1001 && resultCode == RESULT_OK && data != null) {
-            int locationId = data.getIntExtra("selected_location_id", -1);
-            if (locationId != -1) {
-                DB_Operations dbOperations = new DB_Operations(this);
-                Location selectedLocation = dbOperations.getLocationById(locationId);
-                if (selectedLocation != null) {
-                    processBooking(selectedLocation);
-                }
+        if (requestCode == SELECT_LOCATIONS_REQUEST && resultCode == RESULT_OK && data != null) {
+
+            int pickupLocationId = data.getIntExtra("pickup_location_id", -1);
+            int destinationLocationId = data.getIntExtra("destination_location_id", -1);
+
+            double distance = data.getDoubleExtra("distance", 0);
+            double price = data.getDoubleExtra("price", 0);
+
+            DB_Operations dbOperations = new DB_Operations(this);
+            Location pickupLocation = dbOperations.getLocationById(pickupLocationId);
+            Location destinationLocation = dbOperations.getLocationById(destinationLocationId);
+
+            if (pickupLocation != null && destinationLocation != null) {
+                processJourneyBooking(pickupLocation, destinationLocation, distance, price);
+            } else {
+                Toast.makeText(this, "Error: Could not retrieve location data.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void processBooking(Location location) {
+    private void processJourneyBooking(Location pickup, Location destination, double distance, double price) {
         String currentTime = dateFormat.format(new Date());
 
         new AlertDialog.Builder(this)
-                .setTitle("Confirm Booking")
+                .setTitle("Confirm Journey Booking")
                 .setMessage(String.format(Locale.US,
-                        "Book a bike from:\n\n" +
-                                "Location: %s\n" +
-                                "Address: %s\n" +
-                                "Available Bikes: %d\n" +
-                                "Booking Time: %s",
-                        location.getName(),
-                        location.getAddress(),
-                        location.getAvailableBikes(),
-                        currentTime))
+                        "Journey Details:\n\n" +
+                                "From: %s\n" +
+                                "To: %s\n" +
+                                "Distance: %.2f km\n" +
+                                "Price: Rs. %.0f\n" +
+                                "Time: %s\n\n" +
+                                "Available Bikes at Pickup: %d",
+                        pickup.getName(),
+                        destination.getName(),
+                        distance,
+                        price,
+                        currentTime,
+                        pickup.getAvailableBikes()))
                 .setPositiveButton("Confirm", (dialog, which) -> {
-                    completeBooking(location);
+                    completeJourneyBooking(pickup, destination, distance, price);
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
     }
 
-    private void completeBooking(Location location) {
-        if (location.getAvailableBikes() > 0) {
-            location.setAvailableBikes(location.getAvailableBikes() - 1);
+    private void completeJourneyBooking(Location pickup, Location destination, double distance, double price) {
+        if (pickup.getAvailableBikes() > 0) {
+            // Optimistic lock: Read number of bikes, reduce and write
+            int currentBikes = pickup.getAvailableBikes();
+            pickup.setAvailableBikes(currentBikes - 1);
 
             DB_Operations dbOperations = new DB_Operations(this);
-            if (dbOperations.updateLocation(location)) {
+            if (dbOperations.updateLocation(pickup)) {
                 String currentTime = dateFormat.format(new Date());
-                showBookingConfirmation(location, currentTime);
+                showJourneyConfirmation(pickup, destination, distance, price, currentTime);
                 loadLocations(); // Refresh the list
             } else {
                 Toast.makeText(this,
-                        "Failed to book bike. Please try again.",
+                        "Failed to book journey. Please try again.",
                         Toast.LENGTH_LONG).show();
             }
+        } else {
+            Toast.makeText(this, "No available bikes at the pickup location.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void showBookingConfirmation(Location location, String bookingTime) {
+    private void showJourneyConfirmation(Location pickup, Location destination,
+                                         double distance, double price, String bookingTime) {
         new AlertDialog.Builder(this)
-                .setTitle("Booking Successful!")
+                .setTitle("Journey Booking Successful!")
                 .setMessage(String.format(Locale.US,
                         "Booking Details:\n\n" +
-                                "Location: %s\n" +
-                                "Address: %s\n" +
+                                "From: %s\n" +
+                                "To: %s\n" +
+                                "Distance: %.2f km\n" +
+                                "Price: Rs. %.0f\n" +
                                 "Booking Time: %s\n\n" +
                                 "Please pick up your bike within 30 minutes.",
-                        location.getName(),
-                        location.getAddress(),
+                        pickup.getName(),
+                        destination.getName(),
+                        distance,
+                        price,
                         bookingTime))
                 .setPositiveButton("OK", null)
                 .show();

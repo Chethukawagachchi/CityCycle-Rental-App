@@ -712,4 +712,18 @@ public class DB_Operations extends SQLiteOpenHelper {
 
         db.close();
     }
+
+    public boolean isConnected() {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getReadableDatabase();
+            return db != null && db.isOpen();
+        } catch (Exception e) {
+            return false;
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
 }

@@ -13,6 +13,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class HelpSupportActivity extends AppCompatActivity {
 
     private ExpandableListView expandableListView;
